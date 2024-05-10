@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="msuliot.helpers",
+    name="helpers",
     version="0.2.0",
     author="Michael Suliot",
     author_email="michael@suliot.com",
