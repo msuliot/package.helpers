@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="helper_functions",
-    version="0.1.0",
+    name="helpers",
+    version="0.2.0",
     author="Michael Suliot",
     author_email="michael@suliot.com",
     description="Some basic helper functions for AI projects",
@@ -19,5 +19,5 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.6',
+    python_requires='>=3.12',
 )
