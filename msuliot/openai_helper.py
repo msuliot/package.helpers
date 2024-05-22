@@ -96,13 +96,13 @@ class openai_chat:
                 if chunk.choices and chunk.choices[0].delta and chunk.choices[0].delta.content is not None:
                     chunk_content = chunk.choices[0].delta.content
                     stream_response.append(chunk_content)
-                    for char in chunk_content:
-                        console.print(char, end='', flush=True, markup=True)
-                        full_text += char
+                    console.print(chunk_content, end="", markup=True)
+                    full_text += chunk_content
                 else:
                     # End of stream detected
                     console.print("\n", markup=True)
                     break
+
 
 
 
