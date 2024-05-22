@@ -1,5 +1,6 @@
 from openai import OpenAI
 import os
+from rich.console import Console
 
 ### Logging ###
 import logging as log
@@ -73,6 +74,36 @@ class openai_chat:
         log.info(f"OpenAI stream has completed and added to messages.")
         self.add_message("assistant", full_text)
         return full_text
+    
+
+    def execute_stream_markup(self):
+        full_text = ""
+        stream_response = []
+        console = Console()
+
+        try:
+            response = self.openai_client.chat.completions.create(
+                model=self.model_chat,
+                messages=self.messages,
+                temperature=self.temperature,
+                stream=True
+            )
+        except Exception as e:
+            log.error(f"Error in openai_chat.execute_stream: {e}")
+            print(e)
+        else:
+            for chunk in response:
+                if chunk.choices and chunk.choices[0].delta and chunk.choices[0].delta.content is not None:
+                    chunk_content = chunk.choices[0].delta.content
+                    stream_response.append(chunk_content)
+                    for char in chunk_content:
+                        console.print(char, end='', flush=True, markup=True)
+                        full_text += char
+                else:
+                    # End of stream detected
+                    console.print("\n", markup=True)
+                    break
+
 
 
     def display(self, response):
@@ -152,24 +183,7 @@ class openai_audio:
             # code to execute if no exception was raised
             return True
 
-    def create_prompt_for_youtube_video(self, transcript):
-        prompt = f"""
-        You are an expert at creative summaries of videos.
-        Your task is to generate a summary of the video transcript for youtube.
-        The goal is to have the summary be engaging and informative and to make people want to watch the video.
-
-        Summarize the video transcript in 1000 words and use AI and ChatGPT as much as it makes sense, 
-        but make sure it is still readable by humans.
-        also use first person pronouns like "I" and "me" to make it more personal.
-        Transcript enclosed in triple backticks. 
-
-        Transcript: ```{transcript}```
-        """
-        return prompt 
-
-
-
-
+    
 
 class openai_embeddings:
 
